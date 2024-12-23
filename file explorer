@@ -1,0 +1,25 @@
+#include <iostream>
+#include <filesystem>  // Include the filesystem library (C++17)
+namespace fs = std::filesystem;
+
+int main() {
+    std::string path = ".";  // Default to current directory
+
+    // Ask the user to enter a directory path
+    std::cout << "Enter the directory path (or press Enter for current directory): ";
+    std::getline(std::cin, path);
+
+    // Check if the directory exists
+    if (!fs::exists(path) || !fs::is_directory(path)) {
+        std::cout << "The specified path is not a valid directory." << std::endl;
+        return 1;
+    }
+
+    // Iterate through the directory and list files
+    std::cout << "\nListing files in directory: " << path << std::endl;
+    for (const auto& entry : fs::directory_iterator(path)) {
+        std::cout << (entry.is_directory() ? "[DIR] " : "[FILE] ") << entry.path().filename().string() << std::endl;
+    }
+
+    return 0;
+}
